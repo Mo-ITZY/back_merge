@@ -11,7 +11,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    // 회원 가입git
+    // 회원 가입
     @PostMapping("/mo-itzy/join")
     public String join(@RequestBody MemberJoinForm form) {
         memberService.join(form);
