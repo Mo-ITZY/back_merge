@@ -22,5 +22,4 @@ public class MemberJoinForm {
 
     @Embedded
     private Address address;
-
 }

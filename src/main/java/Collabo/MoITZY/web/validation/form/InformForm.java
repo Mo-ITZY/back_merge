@@ -1,26 +1,14 @@
 package Collabo.MoITZY.web.validation.form;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class InformForm {
 
-        private String title;
-        private String content;
+    @NotBlank
+    private String title;
 
-        public String getTitle() {
-            return title;
-        }
-
-        public void setTitle(String title) {
-            this.title = title;
-        }
-
-        public String getContent() {
-            return content;
-        }
-
-        public void setContent(String content) {
-            this.content = content;
-        }
+    @NotBlank
+    private String content;
 }
