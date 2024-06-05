@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: Mo-ITZY
+
+  datasource:
+    url: jdbc:mysql://113.198.230.24:332/MoItzy?maxAllowedPacket=10000000&useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+        use_sql_comments: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
