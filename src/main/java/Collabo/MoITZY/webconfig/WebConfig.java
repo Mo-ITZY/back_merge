@@ -1,4 +1,4 @@
-package Collabo.MoITZY.web.config;
+package Collabo.MoITZY.webconfig;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

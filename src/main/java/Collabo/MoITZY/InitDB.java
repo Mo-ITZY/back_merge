@@ -34,7 +34,7 @@ public class InitDB {
 
     @PostConstruct
     public void init() {
-        initService.dummyInit();
+//        initService.dummyInit();
         festivalApiInitService.initApi();
     }
 
