@@ -35,4 +35,9 @@ public class FestivalService {
     public Page<FestivalDto> findFestivals(FestivalSearchCond cond, Pageable pageable) {
         return festivalRepository.searchFestival(cond, pageable);
     }
+
+    // 축제 상세(단 건) 조회
+    public FestivalDto findFestival(Long id) {
+        return festivalRepository.findFestival(id);
+    }
 }

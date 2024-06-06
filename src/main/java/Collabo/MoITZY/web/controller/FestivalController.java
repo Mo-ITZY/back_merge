@@ -15,6 +15,7 @@ public class FestivalController {
 
     private final FestivalService festivalService;
 
+    // 축제 조회
     @PostMapping("/mo-itzy/festivals")
     public Page<FestivalDto> showFestivals(
             @RequestBody FestivalSearchCond cond,
@@ -23,5 +24,11 @@ public class FestivalController {
         Pageable pageable = PageRequest.of(page, size);
 
         return festivalService.findFestivals(cond, pageable);
+    }
+
+    // 축제 상세 조회
+    @GetMapping("/mo-itzy/festivals/{id}")
+    public FestivalDto showFestival(@PathVariable("id") Long id) {
+        return festivalService.findFestival(id);
     }
 }

@@ -9,4 +9,5 @@ public interface FestivalRepositoryCustom {
 
     Page<FestivalDto> searchFestival(FestivalSearchCond cond, Pageable pageable);
 
+    FestivalDto findFestival(Long id);
 }

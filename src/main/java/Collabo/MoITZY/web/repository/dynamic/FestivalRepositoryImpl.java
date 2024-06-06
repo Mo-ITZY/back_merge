@@ -55,6 +55,28 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }
 
+    @Override
+    public FestivalDto findFestival(Long id) {
+        return queryFactory
+                .select(Projections.constructor(FestivalDto.class,
+                        festival.id,
+                        festival.name,
+                        festival.img,
+                        festival.LAT,
+                        festival.LNG,
+                        festival.trafficInfo,
+                        festival.expense,
+                        festival.contact,
+                        festival.homepage,
+                        festival.description,
+                        festival.facilities,
+                        festival.place,
+                        festival.period))
+                .from(festival)
+                .where(festival.id.eq(id))
+                .fetchOne();
+    }
+
     private BooleanExpression keywordEq(String keyword) {
         return hasText(keyword) ? festival.name.contains(keyword) : null;
     }
