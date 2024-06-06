@@ -3,8 +3,8 @@ package Collabo.MoITZY.web.controller;
 import Collabo.MoITZY.domain.Member;
 import Collabo.MoITZY.web.service.LoginService;
 import Collabo.MoITZY.web.validation.form.MemberLoginForm;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
@@ -16,16 +16,19 @@ import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.Map;
 
+import static Collabo.MoITZY.web.session.SessionConst.*;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
 
     private final LoginService loginService;
-    private final HttpServletResponse httpServletResponse;
 
     @PostMapping("/mo-itzy/login")
-    public ResponseEntity<Map<String, String>> login(@Validated @RequestBody MemberLoginForm form, BindingResult bindingResult) {
+    public ResponseEntity<Map<String, String>> login(
+            @Validated @RequestBody MemberLoginForm form,
+            BindingResult bindingResult, HttpServletRequest request) {
 
         Map<String, String> response = new HashMap<>();
 
@@ -36,7 +39,7 @@ public class LoginController {
             return ResponseEntity.badRequest().body(response);
         }
 
-        Member loginMember = loginService.login(form);
+        Member loginMember = loginService.login(form.getLoginId(), form.getPassword());
 
         // 로그인 실패
         if (loginMember == null) {
@@ -49,17 +52,34 @@ public class LoginController {
 
         // 로그인 성공
         log.info("Login successful");
-
-        // 세션 ID 생성------------------------------------------------------------------------
-        // 쿠키 설정, 쿠키 유지기간 설정 없이 브라우저 세션 종료시 파기(세션 쿠키)
-        Cookie cookie = new Cookie("test_Session", String.valueOf(loginMember.getId()));
-        cookie.setHttpOnly(true); // 프론트 접근 불가 설정
-        httpServletResponse.addCookie(cookie); // 쿠키를 응답에 추가
-        //------------------------------------------------------------------------------------------
-
         response.put("status", "success");
         response.put("message", "Login successful");
 
+        // 세션이 있으면 세션 반환, 없으면 생성
+        HttpSession session = request.getSession();
+
+        // 세션에 로그인 회원 정보 보관
+        session.setAttribute(LOGIN_MEMBER, loginMember);
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/mo-itzy/logout")
+    public ResponseEntity<Map<String, String>> logout(HttpServletRequest request) {
+        Map<String, String> response = new HashMap<>();
+        HttpSession session = request.getSession(false);
+
+        if (session == null) {
+            response.put("status", "failure");
+            response.put("message", "세션이 존재하지 않습니다.");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        // 세션 만료
+        session.invalidate();
+
+        response.put("status", "success");
+        response.put("message", "Logout successful");
         return ResponseEntity.ok(response);
     }
 
