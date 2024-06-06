@@ -29,6 +29,7 @@ public class Inform {
 
     private LocalDateTime writeDate;
 
+
     public Inform(String title, String content, LocalDateTime writeDate) {
         this.title = title;
         this.content = content;
