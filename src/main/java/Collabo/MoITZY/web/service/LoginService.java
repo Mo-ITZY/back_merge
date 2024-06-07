@@ -4,10 +4,10 @@ import Collabo.MoITZY.domain.Member;
 import Collabo.MoITZY.dto.LoginDto;
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.repository.MemberRepository;
+import Collabo.MoITZY.web.security.TokenProvider;
 import Collabo.MoITZY.web.validation.form.MemberLoginForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,27 +22,44 @@ import static org.springframework.http.HttpStatus.*;
 public class LoginService {
 
     private final MemberRepository memberRepository;
+    private final TokenProvider tokenProvider;
 
     public ResponseDto<LoginDto> login(MemberLoginForm form) {
+        return getLoginDtoResponseDto(form);
+    }
+
+    private ResponseDto<LoginDto> getLoginDtoResponseDto(MemberLoginForm form) {
         String loginId = form.getLoginId();
         String password = form.getPassword();
 
         try {
-            boolean existByLoginId = memberRepository.existByLoginId(loginId);
+            boolean existByLoginId = memberRepository.existsByLoginId(loginId);
             if(!existByLoginId) {
-                return ResponseDto.error(BAD_REQUEST, "아이디가 존재하지 않습니다.");
+                return ResponseDto.error(NOT_FOUND, "아이디가 존재하지 않습니다.");
             }
-            boolean existedByPassword = memberRepository.existByLoginIdAndPassword(loginId, password);
+            boolean existedByPassword = memberRepository.existsByLoginIdAndPassword(loginId, password);
             if(!existedByPassword) {
-                return ResponseDto.error(BAD_REQUEST, "비밀번호가 일치하지 않습니다.");
+                return ResponseDto.error(NOT_FOUND, "비밀번호가 일치하지 않습니다.");
             }
         } catch (Exception e) {
             return ResponseDto.error(INTERNAL_SERVER_ERROR, "서버 오류");
         }
 
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
+        boolean present = memberRepository.findByLoginId(loginId).isPresent();
 
+        if (!present) {
+            return ResponseDto.error(NOT_FOUND, "고객 정보가 존재하지 않습니다.");
+        }
 
+        Member findMember = memberRepository.findByLoginId(loginId).get();
+
+        int exprTIme = 3600;
+
+        String token = tokenProvider.createToken(loginId, exprTIme);
+
+        LoginDto loginDto = new LoginDto(token, exprTIme, findMember);
+
+        return ResponseDto.ok(OK, "로그인 성공", loginDto);
     }
 
 //    /**

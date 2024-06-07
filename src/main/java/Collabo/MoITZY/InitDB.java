@@ -61,7 +61,19 @@ public class InitDB {
             em.persist(review);
 
             Inform inform = new Inform("제목", "내용", LocalDateTime.now());
+            Inform inform1 = new Inform("title11111", "content11111", LocalDateTime.now());
+            Inform inform2 = new Inform("title22222", "content22222", LocalDateTime.now());
+            Inform inform3 = new Inform("title33333", "content33333", LocalDateTime.now());
+            Inform inform4 = new Inform("title44444", "content44444", LocalDateTime.now());
+            Inform inform5 = new Inform("title55555", "content55555", LocalDateTime.now());
+            Inform inform6 = new Inform("title66666", "content66666", LocalDateTime.now());
             em.persist(inform);
+            em.persist(inform1);
+            em.persist(inform2);
+            em.persist(inform3);
+            em.persist(inform4);
+            em.persist(inform5);
+            em.persist(inform6);
 
             List<Review> reviews1 = member.getReviews();
             for (Review review1 : reviews1) {

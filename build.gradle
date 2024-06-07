@@ -44,6 +44,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
 	testImplementation 'io.projectreactor:reactor-test'
 
+	// jwt token
+	implementation 'com.nimbusds:nimbus-jose-jwt:9.31'	// *jwt 토큰 생성을 위해 추가
+
 	//test lombok 사용
 	testCompileOnly 'org.projectlombok:lombok'
 	testAnnotationProcessor 'org.projectlombok:lombok'

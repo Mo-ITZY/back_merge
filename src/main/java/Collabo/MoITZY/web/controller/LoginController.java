@@ -1,6 +1,7 @@
 package Collabo.MoITZY.web.controller;
 
 import Collabo.MoITZY.domain.Member;
+import Collabo.MoITZY.dto.LoginDto;
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.service.LoginService;
 import Collabo.MoITZY.web.validation.form.MemberLoginForm;
@@ -86,7 +87,6 @@ public class LoginController {
 
     @PostMapping("/mo-itzy/login")
     public ResponseDto<?> login(@RequestBody MemberLoginForm form) {
-        return null;
+        return loginService.login(form);
     }
-
 }
