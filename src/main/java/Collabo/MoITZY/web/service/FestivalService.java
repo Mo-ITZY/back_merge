@@ -3,12 +3,14 @@ package Collabo.MoITZY.web.service;
 import Collabo.MoITZY.domain.Festival;
 import Collabo.MoITZY.dto.FestivalApiDto;
 import Collabo.MoITZY.dto.FestivalDto;
+import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.repository.FestivalRepository;
 import Collabo.MoITZY.web.repository.cond.FestivalSearchCond;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +34,9 @@ public class FestivalService {
     }
 
     // 축제 조회
-    public Page<FestivalDto> findFestivals(FestivalSearchCond cond, Pageable pageable) {
-        return festivalRepository.searchFestival(cond, pageable);
+    public ResponseDto<Page<FestivalDto>> findFestivals(FestivalSearchCond cond, Pageable pageable) {
+        Page<FestivalDto> festivalDtos = festivalRepository.searchFestival(cond, pageable);
+        return ResponseDto.of(HttpStatus.OK, "축제 조회 성공", festivalDtos);
     }
 
     // 축제 상세(단 건) 조회

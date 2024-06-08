@@ -1,6 +1,7 @@
 package Collabo.MoITZY.web.service;
 
 import Collabo.MoITZY.domain.Member;
+import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.repository.MemberRepository;
 import Collabo.MoITZY.web.validation.form.MemberJoinForm;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @Transactional(readOnly = true)
@@ -19,10 +22,15 @@ public class MemberService {
 
     // 회원 가입
     @Transactional
-    public Long join(MemberJoinForm memberJoinForm) {
+    public ResponseDto<Long> join(MemberJoinForm memberJoinForm) {
         Member member = Member.createMember(memberJoinForm);
-        validateDuplicatedMember(member); //중복 회원 검증
-        return memberRepository.save(member).getId();
+        try {
+            validateDuplicatedMember(member); //중복 회원 검증
+        } catch (IllegalStateException e) {
+            return ResponseDto.error(CONFLICT, e.getMessage());
+        }
+        Long memberId = memberRepository.save(member).getId();
+        return ResponseDto.of(OK, "회원 가입 성공", memberId);
     }
 
     // 중복 회원 검증

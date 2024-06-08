@@ -1,6 +1,7 @@
 package Collabo.MoITZY.web.controller;
 
 import Collabo.MoITZY.dto.FestivalDto;
+import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.repository.cond.FestivalSearchCond;
 import Collabo.MoITZY.web.service.FestivalService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class FestivalController {
 
     // 축제 조회
     @PostMapping("/mo-itzy/festivals")
-    public Page<FestivalDto> showFestivals(
+    public ResponseDto<?> showFestivals(
             @RequestBody FestivalSearchCond cond,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
@@ -27,8 +28,8 @@ public class FestivalController {
     }
 
     // 축제 상세 조회
-    @GetMapping("/mo-itzy/festivals/{id}")
-    public FestivalDto showFestival(@PathVariable("id") Long id) {
-        return festivalService.findFestival(id);
-    }
+//    @GetMapping("/mo-itzy/festivals/{id}")
+//    public FestivalDto showFestival(@PathVariable("id") Long id) {
+//        return festivalService.findFestival(id);
+//    }
 }

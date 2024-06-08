@@ -1,5 +1,6 @@
 package Collabo.MoITZY.web.controller;
 
+import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.service.MemberService;
 import Collabo.MoITZY.web.validation.form.MemberJoinForm;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,7 @@ public class MemberController {
 
     // 회원 가입
     @PostMapping("/mo-itzy/join")
-    public String join(@RequestBody MemberJoinForm form) {
-        memberService.join(form);
-        return "회원 가입 완료";
+    public ResponseDto<?> join(@RequestBody MemberJoinForm form) {
+        return memberService.join(form);
     }
 }

@@ -1,5 +1,6 @@
 package Collabo.MoITZY.web.controller;
 
+import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.dto.ReviewDto;
 import Collabo.MoITZY.web.service.ReviewService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class ReviewController {
 
     // 리뷰 페이지 요청
     @GetMapping("mo-itzy/festivals/{festival_id}/review")
-    public List<ReviewDto> reviewForm(@PathVariable("festival_id") Long festivalId) {
+    public ResponseDto<?> reviewForm(@PathVariable("festival_id") Long festivalId) {
         return reviewService.findReviewOfFestival(festivalId);
     }
 }

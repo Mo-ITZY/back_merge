@@ -1,13 +1,15 @@
 package Collabo.MoITZY.web.service;
 
-import Collabo.MoITZY.domain.Inform;
 import Collabo.MoITZY.dto.InformDto;
+import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.repository.InformRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -15,15 +17,8 @@ public class InformService {
 
     private final InformRepository informRepository;
 
-    // 공지사항 전체 조회
-    public List<InformDto> getAllInforms() {
-        return informRepository.findAll().stream()
-                .map(this::convertToDto)
-                .collect(Collectors.toList());
-    }
-
-    // 공지사항 단건 조회
-    private InformDto convertToDto(Inform inform) {
-        return new InformDto(inform.getId(), inform.getTitle(), inform.getContent(), inform.getWriteDate());
+    public ResponseDto<Page<InformDto>> getAllInforms(Pageable pageable) {
+        Page<InformDto> informDtos = informRepository.getInformList(pageable);
+        return ResponseDto.of(OK, "공지사항 조회 성공", informDtos);
     }
 }
