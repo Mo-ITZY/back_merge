@@ -13,7 +13,7 @@ import java.time.Instant;
 @Service
 public class TokenProvider {
 
-    private static final String SECURITY_KEY = "mo-itzy-to-jwt-token"; // 비밀키
+    private static final String SECURITY_KEY = "jwt-token-of-mo-itzy-application"; // 비밀키
 
     // JWT 생성 메서드
     public String createToken(String loginId, int duration) {

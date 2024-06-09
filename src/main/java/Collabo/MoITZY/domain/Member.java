@@ -72,6 +72,5 @@ public class Member {
 
     public void addReview(Review review) {
         reviews.add(review);
-
     }
 }
