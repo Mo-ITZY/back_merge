@@ -1,6 +1,6 @@
 package Collabo.MoITZY.web.repository;
 
-import Collabo.MoITZY.domain.Member;
+import Collabo.MoITZY.domain.member.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -2,7 +2,7 @@ package Collabo.MoITZY.web.controller;
 
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.service.LoginService;
-import Collabo.MoITZY.web.validation.form.MemberLoginForm;
+import Collabo.MoITZY.web.validation.form.UserLoginForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +15,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/mo-itzy/login")
-    public ResponseDto<?> login(@RequestBody MemberLoginForm form) {
+    public ResponseDto<?> login(@RequestBody UserLoginForm form) {
         return loginService.login(form);
     }
 }

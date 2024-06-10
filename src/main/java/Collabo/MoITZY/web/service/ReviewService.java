@@ -26,6 +26,6 @@ public class ReviewService {
     // 리뷰 조회
     public ResponseDto<List<ReviewDto>> findReviewOfFestival(Long festivalId) {
         List<ReviewDto> reviewDtos = reviewRepository.findReviewDtos(festivalId);
-        return ResponseDto.of(OK, "리뷰 조회 성공", reviewDtos);
+        return ResponseDto.ok(OK, "리뷰 조회 성공", reviewDtos);
     }
 }

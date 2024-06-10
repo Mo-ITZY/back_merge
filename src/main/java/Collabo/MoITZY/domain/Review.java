@@ -1,5 +1,6 @@
 package Collabo.MoITZY.domain;
 
+import Collabo.MoITZY.domain.member.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -20,9 +21,9 @@ public class Review {
     @Column(name = "review_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY) // Review는 한명의 Member에 의해 작성된다
+    @ManyToOne(fetch = LAZY) // Review는 한명의 User에 의해 작성된다
     @JoinColumn(name = "member_id")
-    private Member member;
+    private User user;
 
     @ManyToOne(fetch = LAZY)
     private Festival festival; // 해당 리뷰가 어느 Festival에 속해 있는지
@@ -32,8 +33,8 @@ public class Review {
     @NotNull
     private String content;
 
-    public Review(Member member, Festival festival, String img, String content) {
-        this.member = member;
+    public Review(User user, Festival festival, String img, String content) {
+        this.user = user;
         this.festival = festival;
         this.img = img;
         this.content = content;

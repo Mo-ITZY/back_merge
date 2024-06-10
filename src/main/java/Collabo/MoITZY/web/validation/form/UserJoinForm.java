@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class MemberJoinForm {
+public class UserJoinForm {
 
     @NotBlank
     private String loginId;

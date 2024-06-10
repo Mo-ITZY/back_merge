@@ -14,6 +14,9 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 
@@ -21,11 +24,14 @@ import java.util.List;
 @SpringBootTest
 class FestivalServiceTest {
 
-    private static final String API_URL = "http://apis.data.go.kr/6260000/FestivalService/getFestivalKr";
-    private static final String API_KEY = "MvwRp6lI%2B00uP5QO2M1i1tLd2Rfn5pCVX0byg6cZLvujlrwGQt0EfinPijBsw8XCuiYQRvTTp%2F1%2F13BjQ%2Bka7Q%3D%3D";
+    private static final String API_URL = "https://apis.data.go.kr/6260000/FestivalService/getFestivalKr";
+
+    private static final String API_KEY = "MvwRp6lI+00uP5QO2M1i1tLd2Rfn5pCVX0byg6cZLvujlrwGQt0EfinPijBsw8XCuiYQRvTTp/1/13BjQ+ka7Q==";
+
 
     private RestTemplate restTemplate;
-    private String url;
+
+    URI uri;
 
     @Autowired
     private FestivalService festivalService;
@@ -35,19 +41,24 @@ class FestivalServiceTest {
         restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
-        url = UriComponentsBuilder.fromHttpUrl(API_URL)
-                .queryParam("resultType", "JSON")
+        String encodedApiKey = URLEncoder.encode(API_KEY, StandardCharsets.UTF_8);
+
+        uri = UriComponentsBuilder
+                .fromUriString(API_URL)
+                .queryParam("serviceKey", encodedApiKey)
                 .queryParam("numOfRows", 10)
                 .queryParam("pageNo", 1)
-                .queryParam("serviceKey", API_KEY)
-                .toUriString();
-        log.info("url: {}", url);
+                .queryParam("resultType", "JSON")
+                .build(true)
+                .toUri();
+
+        log.info("uri: {}", uri);
     }
 
     @Test
     void festivalApiTest() throws JsonProcessingException {
         // API 호출
-        ResponseEntity<String> entity = restTemplate.getForEntity(url, String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity(uri, String.class);
 
         String body = entity.getBody();
 

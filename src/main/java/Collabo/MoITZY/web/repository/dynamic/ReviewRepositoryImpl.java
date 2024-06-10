@@ -22,8 +22,8 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     public List<ReviewDto> findReviewDtos(Long festivalId) {
         List<ReviewDto> result = queryFactory
                 .select(Projections.constructor(ReviewDto.class,
-                        review.member.img,
-                        review.member.name,
+                        review.user.img,
+                        review.user.name,
                         review.img,
                         review.content))
                 .from(review)

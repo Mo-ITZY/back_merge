@@ -5,7 +5,7 @@ import lombok.Data;
 
 
 @Data
-public class MemberLoginForm {
+public class UserLoginForm {
 
     @NotBlank
     private String loginId;

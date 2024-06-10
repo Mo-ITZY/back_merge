@@ -36,7 +36,7 @@ public class FestivalService {
     // 축제 조회
     public ResponseDto<Page<FestivalDto>> findFestivals(FestivalSearchCond cond, Pageable pageable) {
         Page<FestivalDto> festivalDtos = festivalRepository.searchFestival(cond, pageable);
-        return ResponseDto.of(HttpStatus.OK, "축제 조회 성공", festivalDtos);
+        return ResponseDto.ok(HttpStatus.OK, "축제 조회 성공", festivalDtos);
     }
 
     // 축제 상세(단 건) 조회

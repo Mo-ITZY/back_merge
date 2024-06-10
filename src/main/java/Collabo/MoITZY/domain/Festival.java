@@ -15,6 +15,7 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static jakarta.persistence.CascadeType.*;
 import static lombok.AccessLevel.PROTECTED;
 
 @Entity
@@ -58,10 +59,10 @@ public class Festival {
     @Embedded
     private Period period;
 
-    @OneToMany(mappedBy = "festival") // Festival은 Member에 의해 여러 ROI로 설정될 수 있다
+    @OneToMany(mappedBy = "festival", cascade = ALL, orphanRemoval = true) // Festival은 Member에 의해 여러 ROI로 설정될 수 있다
     private List<ROI> roiList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "festival") // Festival은 여러개의 Review를 가질 수 있다
+    @OneToMany(mappedBy = "festival", cascade = ALL, orphanRemoval = true) // Festival은 여러개의 Review를 가질 수 있다
     private List<Review> reviews = new ArrayList<>();
 
     // 편의 메서드
