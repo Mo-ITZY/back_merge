@@ -9,11 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static jakarta.persistence.CascadeType.*;
 import static lombok.AccessLevel.PROTECTED;
@@ -94,18 +97,20 @@ public class Festival {
 
     // API를 Entity로 변환
     public static Festival ApiToFestival(FestivalApiDto.FestivalData data) {
+//        log.info("before parsing address = {}", data.getAddr1());
         Address address = null;
         if (data.getAddr1() != null && !data.getAddr1().isEmpty()) {
             address = parseAddress(data.getAddr1());
         }
+//        log.info("after parsing address = {}", address);
 
+        log.info("before parsing period = {}", data.getUsageDayWeekAndTime());
         Period period = null;
         if (data.getUsageDayWeekAndTime() != null && !data.getUsageDayWeekAndTime().isEmpty()) {
             period = parsePeriod(data.getUsageDayWeekAndTime());
         }
-
-        log.info("address = {}", data.getAddr1());
-        log.info("period = {}", data.getUsageDayWeekAndTime());
+        log.info("after parsing period = {}", period);
+        log.info("------------------------------------");
 
         return new Festival(
                 data.getTitle(),
@@ -133,28 +138,71 @@ public class Festival {
         return new Address(first, second, third, detail);
     }
 
-    private static Period parsePeriod(String periodString) {
+    public static Period parsePeriod(String periodString) {
         LocalDateTime startDate = null;
         LocalDateTime endDate = null;
 
         try {
-            if (periodString.startsWith("매년")) {
-                // 매년 n월의 경우
-                String month = periodString.replaceAll("[^0-9]", "");
-                int monthInt = Integer.parseInt(month);
+            periodString = periodString.replaceAll("\\s+", ""); // 공백 제거
+            log.info("periodString 공백 제거 = " + periodString);
 
-                startDate = LocalDateTime.of(LocalDateTime.now().getYear(), monthInt, 1, 0, 0);
-                endDate = startDate.withDayOfMonth(startDate.toLocalDate().lengthOfMonth());
-            } else if (periodString.contains("~")) {
+            if (periodString.contains("~")) {
                 // yyyy.MM.dd 형식의 경우
                 String[] dates = periodString.split("~");
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.M.d.(E)");
+                for (String date : dates) {
+                    log.info("date = " + date);
+                }
 
-                startDate = LocalDateTime.parse(dates[0].trim(), formatter);
-                endDate = LocalDateTime.parse(dates[1].trim(), formatter);
+                // 년도 보정
+                if (!dates[1].startsWith("20")) {
+                    dates[1] = dates[0].substring(0, 5) + dates[1];
+                }
+
+                // '.' 기준으로 다시 split
+                String[] startDateParts = dates[0].split("\\.");
+                String[] endDateParts = dates[1].split("\\.");
+
+                LocalDate startLocalDate = LocalDate.of(
+                        Integer.parseInt(startDateParts[0]),
+                        Integer.parseInt(startDateParts[1]),
+                        Integer.parseInt(startDateParts[2].split("\\(")[0])
+                );
+
+                LocalDate endLocalDate = LocalDate.of(
+                        Integer.parseInt(endDateParts[0]),
+                        Integer.parseInt(endDateParts[1]),
+                        Integer.parseInt(endDateParts[2].split("\\(")[0])
+                );
+
+                startDate = startLocalDate.atStartOfDay();
+                endDate = endLocalDate.atStartOfDay();
+
+                log.info("1. startDate = " + startDate + ", endDate = " + endDate);
+
+            } else if (periodString.matches("\\d{4}.\\d{1,2}.\\d{1,2}.\\(.\\)")) {
+                // yyyy.MM.dd.(E) 형식의 경우
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.M.d.(E)");
+                startDate = LocalDate.parse(periodString.trim(), formatter).atStartOfDay();
+                endDate = startDate;
+
+                log.info("2. startDate = " + startDate + ", endDate = " + endDate);
+
+            } else if (periodString.matches("\\d{4}년\\d{1,2}월예정") || periodString.matches("\\d{4}년\\d{1,2}월말예정")) {
+                // yyyy년 MM월 예정 또는 yyyy년 MM월 말 예정 형식의 경우
+                Pattern pattern = Pattern.compile("(\\d{4})년(\\d{1,2})월");
+                Matcher matcher = pattern.matcher(periodString);
+                if (matcher.find()) {
+                    int year = Integer.parseInt(matcher.group(1));
+                    int month = Integer.parseInt(matcher.group(2));
+
+                    startDate = LocalDateTime.of(year, month, 1, 0, 0);
+                    endDate = startDate.withDayOfMonth(startDate.toLocalDate().lengthOfMonth());
+                }
+
+                log.info("3. startDate = " + startDate + ", endDate = " + endDate);
             }
         } catch (DateTimeParseException e) {
-            log.error("Date parsing error: {}", e.getMessage());
+            log.info("Date parsing error: " + e.getMessage());
         }
 
         return new Period(startDate, endDate);

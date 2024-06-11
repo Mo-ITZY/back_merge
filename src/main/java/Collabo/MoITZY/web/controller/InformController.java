@@ -20,7 +20,9 @@ public class InformController {
     private final InformService informService;
 
     @GetMapping("/mo-itzy/main")
-    public ResponseDto<?> getInforms(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+    public ResponseDto<?> getInforms(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return informService.getAllInforms(pageable);
     }

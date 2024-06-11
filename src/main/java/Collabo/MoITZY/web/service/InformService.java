@@ -17,6 +17,7 @@ public class InformService {
 
     private final InformRepository informRepository;
 
+    // 공지사항 조회
     public ResponseDto<Page<InformDto>> getAllInforms(Pageable pageable) {
         Page<InformDto> informDtos = informRepository.getInformList(pageable);
         return ResponseDto.ok(OK, "공지사항 조회 성공", informDtos);

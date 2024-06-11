@@ -26,10 +26,4 @@ public class FestivalController {
 
         return festivalService.findFestivals(cond, pageable);
     }
-
-    // 축제 상세 조회
-//    @GetMapping("/mo-itzy/festivals/{id}")
-//    public FestivalDto showFestival(@PathVariable("id") Long id) {
-//        return festivalService.findFestival(id);
-//    }
 }

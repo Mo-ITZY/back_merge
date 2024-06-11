@@ -31,4 +31,14 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .fetch();
         return result;
     }
+
+    @Override
+    public void writeReview(Long festivalId, String content, String img) {
+        long execute = queryFactory
+                .insert(review)
+                .set(review.festival.id, festivalId)
+                .set(review.content, content)
+                .set(review.img, img)
+                .execute();
+    }
 }

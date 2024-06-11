@@ -3,12 +3,14 @@ package Collabo.MoITZY.domain.embed;
 import jakarta.persistence.Embeddable;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import static lombok.AccessLevel.*;
 
 @Embeddable
 @NoArgsConstructor(access = PROTECTED)
 @Getter
+@ToString(of = {"first", "second", "third", "detail"})
 public class Address {
 
     private String first; // 특별시, 광역시, 8도

@@ -10,6 +10,6 @@ public class ReviewWriteForm {
     private String img;
 
     @NotBlank
-    private String detail;
+    private String content;
 
 }

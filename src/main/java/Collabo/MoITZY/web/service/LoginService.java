@@ -24,6 +24,7 @@ public class LoginService {
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
 
+    // 로그인
     public ResponseDto<LoginDto> login(UserLoginForm form) {
         String loginId = form.getLoginId();
         String password = form.getPassword();
