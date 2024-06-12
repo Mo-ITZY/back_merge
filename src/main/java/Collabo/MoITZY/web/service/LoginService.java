@@ -52,21 +52,11 @@ public class LoginService {
         }
 
         Member findMember = memberRepository.findByLoginId(loginId).get();
-        String memberType;
-
-        if (findMember instanceof Admin) {
-            memberType = "ADMIN";
-        } else if (findMember instanceof User) {
-            memberType = "USER";
-        } else {
-            memberType = "UNKNOWN";
-        }
 
         int exprTIme = 3600;
+        String token = tokenProvider.createJwt(loginId, exprTIme);
 
-        String token = tokenProvider.createToken(loginId, exprTIme);
-
-        LoginDto loginDto = new LoginDto(token, exprTIme, memberType, findMember);
+        LoginDto loginDto = new LoginDto(token, exprTIme);
 
         return ResponseDto.ok(OK, "로그인 성공", loginDto);
     }

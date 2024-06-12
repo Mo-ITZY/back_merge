@@ -30,4 +30,14 @@ public abstract class Member {
         this.loginId = loginId;
         this.password = password;
     }
+
+    public String getRole(Member member) {
+        if (member instanceof Admin) {
+            return "ADMIN";
+        } else if (member instanceof User) {
+            return "USER";
+        } else {
+            return  "UNKNOWN";
+        }
+    }
 }

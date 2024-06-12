@@ -97,12 +97,12 @@ public class Festival {
 
     // API를 Entity로 변환
     public static Festival ApiToFestival(FestivalApiDto.FestivalData data) {
-//        log.info("before parsing address = {}", data.getAddr1());
+        log.info("before parsing address = {}", data.getAddr1());
         Address address = null;
         if (data.getAddr1() != null && !data.getAddr1().isEmpty()) {
             address = parseAddress(data.getAddr1());
         }
-//        log.info("after parsing address = {}", address);
+        log.info("after parsing address = {}", address);
 
         log.info("before parsing period = {}", data.getUsageDayWeekAndTime());
         Period period = null;

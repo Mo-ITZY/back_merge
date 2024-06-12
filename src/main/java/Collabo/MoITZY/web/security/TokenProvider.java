@@ -16,7 +16,7 @@ public class TokenProvider {
     private static final String SECURITY_KEY = "jwt-token-of-mo-itzy-application"; // 비밀키
 
     // JWT 생성 메서드
-    public String createToken(String loginId, int duration) {
+    public String createJwt(String loginId, int duration) {
         try {
             // 만료 시간 : 현재 시간 기준 주어진 시간 뒤
             Instant now = Instant.now();
