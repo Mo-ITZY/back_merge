@@ -4,12 +4,11 @@ import Collabo.MoITZY.domain.Inform;
 import Collabo.MoITZY.dto.InformDto;
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.service.InformService;
+import Collabo.MoITZY.web.validation.form.InformForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,12 +18,21 @@ public class InformController {
 
     private final InformService informService;
 
-    @GetMapping("/mo-itzy/main")
+    // 공지사항 조회
+    @GetMapping("/mo-itzy/notice")
     public ResponseDto<?> getInforms(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
         return informService.getAllInforms(pageable);
+    }
+
+    // 공지사항 작성
+    @PostMapping("/mo-itzy/notice")
+    public ResponseDto<?> writeInform(
+            @RequestHeader("Authorization") String token,
+            @RequestBody InformForm form) {
+        return informService.writeInform(token, form);
     }
 }
 

@@ -65,6 +65,16 @@ public class TokenProvider {
         }
     }
 
+    public void IsNotAdmin(String role) {
+        log.info("role: {}", role);
+
+        if (role.equals("USER")) {
+            throw new MemberNotFoundException("사용자는 접근할 수 없습니다.");
+        } else {
+            throw new MemberNotFoundException("로그인 이후 이용해주세요.");
+        }
+    }
+
     public Member getMemberByToken(String token) {
         log.info("token: {}", token);
 
