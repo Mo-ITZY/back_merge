@@ -17,4 +17,10 @@ public class UserController {
     public ResponseDto<?> join(@RequestBody UserJoinForm form) {
         return userService.join(form);
     }
+
+    // 마이 페이지 요청
+    @GetMapping("/mo-itzy/mypage")
+    public ResponseDto<?> myPage(@RequestHeader("Authorization") String token) {
+        return userService.findMember(token);
+    }
 }

@@ -5,11 +5,13 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.time.Instant;
 
+@Slf4j
 @Service
 public class TokenProvider {
 
@@ -55,9 +57,11 @@ public class TokenProvider {
                 return signedJWT.getJWTClaimsSet().getSubject();
             } else {
                 // 서명이 유효하지 않은 경우
+                log.info("서명이 유효하지 않은 토큰입니다.");
                 return null;
             }
         } catch (Exception e) {
+            log.info("토큰 검증에 실패했습니다: " + e.getMessage());
             return null;
         }
     }

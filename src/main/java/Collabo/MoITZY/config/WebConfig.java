@@ -1,4 +1,4 @@
-package Collabo.MoITZY.webconfig;
+package Collabo.MoITZY.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

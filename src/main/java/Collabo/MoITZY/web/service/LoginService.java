@@ -60,4 +60,8 @@ public class LoginService {
 
         return ResponseDto.ok(OK, "로그인 성공", loginDto);
     }
+
+    public ResponseDto<?> logout(String token) {
+        return ResponseDto.ok(OK, "로그아웃 성공");
+    }
 }
