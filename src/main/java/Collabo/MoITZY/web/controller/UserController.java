@@ -3,6 +3,7 @@ package Collabo.MoITZY.web.controller;
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.service.UserService;
 import Collabo.MoITZY.web.validation.form.UserJoinForm;
+import Collabo.MoITZY.web.validation.form.UserUpdateForm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,5 +23,17 @@ public class UserController {
     @GetMapping("/mo-itzy/mypage")
     public ResponseDto<?> myPage(@RequestHeader("Authorization") String token) {
         return userService.findMember(token);
+    }
+
+    // 회원 정보 수정
+    @PostMapping("/mo-itzy/mypage/update")
+    public ResponseDto<?> update(@RequestHeader("Authorization") String token, @RequestBody UserUpdateForm form) {
+        return userService.updateMember(token, form);
+    }
+
+    // 회원 탈퇴
+    @PostMapping("/mo-itzy/mypage/delete")
+    public ResponseDto<?> delete(@RequestHeader("Authorization") String token) {
+        return userService.deleteMember(token);
     }
 }

@@ -4,6 +4,7 @@ import Collabo.MoITZY.domain.ROI;
 import Collabo.MoITZY.domain.Review;
 import Collabo.MoITZY.domain.embed.Address;
 import Collabo.MoITZY.web.validation.form.UserJoinForm;
+import Collabo.MoITZY.web.validation.form.UserUpdateForm;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -68,5 +69,13 @@ public class User extends Member {
                 userJoinForm.getEmail(),
                 userJoinForm.getAddress(),
                 null);
+    }
+
+    public void updateUser(UserUpdateForm form) {
+        this.name = form.getName();
+        this.email = form.getEmail();
+        this.img = form.getImg();
+        this.address = form.getAddress();
+        this.changePassword(form.getPassword());
     }
 }

@@ -26,5 +26,4 @@ public class Address {
         this.third = third;
         this.detail = detail;
     }
-
 }

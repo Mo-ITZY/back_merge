@@ -40,4 +40,8 @@ public abstract class Member {
             return  "UNKNOWN";
         }
     }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }
