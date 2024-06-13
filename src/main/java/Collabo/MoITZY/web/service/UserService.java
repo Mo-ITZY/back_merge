@@ -44,15 +44,13 @@ public class UserService {
     // 회원 단건 조회
     public ResponseDto<MyPageDto> findMember(String token) {
         try {
-            Member member = getMemberByToken(token);
+            Member member = tokenProvider.getMemberByToken(token);
             String role = member.getRole(member);
             if (!role.equals("USER")) {
-                IsNotUser(role);
+                tokenProvider.IsNotUser(role);
             }
-
             User user = (User) member;
             return ResponseDto.ok(OK, "회원 정보 조회 성공", new MyPageDto(user.getName(), user.getImg(), user.getRoiList().size()));
-
         } catch (MemberNotFoundException e) {
             return ResponseDto.error(NOT_FOUND, e.getMessage());
         }
@@ -62,18 +60,16 @@ public class UserService {
     @Transactional
     public ResponseDto<Void> updateMember(String token, UserUpdateForm form) {
         try {
-            Member member = getMemberByToken(token);
+            Member member = tokenProvider.getMemberByToken(token);
             String role = member.getRole(member);
             if (!role.equals("USER")) {
-                IsNotUser(role);
+                tokenProvider.IsNotUser(role);
             }
-
             User user = (User) member;
             user.updateUser(form);
             memberRepository.save(user);
 
             return ResponseDto.ok(OK, "회원 정보 수정 성공");
-
         } catch (MemberNotFoundException e) {
             return ResponseDto.error(NOT_FOUND, e.getMessage());
         }
@@ -83,44 +79,18 @@ public class UserService {
     @Transactional
     public ResponseDto<?> deleteMember(String token) {
         try {
-            Member member = getMemberByToken(token);
+            Member member = tokenProvider.getMemberByToken(token);
             String role = member.getRole(member);
             if (!role.equals("USER")) {
-                IsNotUser(role);
+                tokenProvider.IsNotUser(role);
             }
-
             User user = (User) member;
             memberRepository.delete(user);
 
-
             return ResponseDto.ok(OK, "회원 탈퇴 성공");
-
         } catch (MemberNotFoundException e) {
             return ResponseDto.error(NOT_FOUND, e.getMessage());
         }
-    }
-
-    private void IsNotUser(String role) {
-        log.info("role: {}", role);
-
-        if (role.equals("ADMIN")) {
-            throw new MemberNotFoundException("관리자는 접근할 수 없습니다.");
-        } else {
-            throw new MemberNotFoundException("로그인 이후 이용해주세요.");
-        }
-    }
-
-    private Member getMemberByToken(String token) {
-        log.info("token: {}", token);
-
-        String loginId = tokenProvider.validateJwt(token);
-        log.info("loginId: {}", loginId);
-
-        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
-        if (findMember.isEmpty()) {
-            throw new MemberNotFoundException("회원 정보를 찾을 수 없습니다.");
-        }
-        return findMember.get();
     }
 
     // 회원 전체 조회

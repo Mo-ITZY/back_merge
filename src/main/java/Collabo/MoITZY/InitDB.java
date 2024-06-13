@@ -58,6 +58,9 @@ public class InitDB {
                     new Address("부산광역시", "부산진구", "가야 1동", "동의대학교 산학협력관 416-1호"), null);
             em.persist(user);
 
+            User user2 = new User("test2", "1234", "테스트2", "test2222@naver.com",
+                    new Address("부산광역시", "부산진구", "가야 1동", "동의대학교 산학협력관 416-2호"), null);
+            em.persist(user2);
 
             Festival festival = new Festival("이름", "이미지 주소", 0.0, 0.0, "교통 정보", "비용", "연락처", "홈페이지 주소", "상세 설명", "편의시설",
                     new Address("특별시, 광역시, 도", "시, 군, 구", "동, 읍, 면", "상세 주소"),

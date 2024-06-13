@@ -36,4 +36,5 @@ public class UserController {
     public ResponseDto<?> delete(@RequestHeader("Authorization") String token) {
         return userService.deleteMember(token);
     }
+
 }

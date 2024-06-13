@@ -20,7 +20,7 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
     // 리뷰 조회
     @Override
     public List<ReviewDto> findReviewDtos(Long festivalId) {
-        List<ReviewDto> result = queryFactory
+        return queryFactory
                 .select(Projections.constructor(ReviewDto.class,
                         review.user.img,
                         review.user.name,
@@ -29,16 +29,5 @@ public class ReviewRepositoryImpl implements ReviewRepositoryCustom {
                 .from(review)
                 .where(review.festival.id.eq(festivalId))
                 .fetch();
-        return result;
-    }
-
-    @Override
-    public void writeReview(Long festivalId, String content, String img) {
-        long execute = queryFactory
-                .insert(review)
-                .set(review.festival.id, festivalId)
-                .set(review.content, content)
-                .set(review.img, img)
-                .execute();
     }
 }

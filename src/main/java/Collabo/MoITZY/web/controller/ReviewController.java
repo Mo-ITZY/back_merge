@@ -20,7 +20,9 @@ public class ReviewController {
 
     // 리뷰 작성
     @PostMapping("mo-itzy/festivals/{festival_id}/review")
-    public ResponseDto<?> writeReview(@PathVariable("festival_id") Long festivalId, @RequestBody ReviewWriteForm form) {
-        return reviewService.writeReview(festivalId, form);
+    public ResponseDto<?> writeReview(@RequestHeader("Authorization") String token,
+                                      @PathVariable("festival_id") Long festivalId,
+                                      @RequestBody ReviewWriteForm form) {
+        return reviewService.writeReview(token, festivalId, form);
     }
 }

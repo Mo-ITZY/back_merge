@@ -1,19 +1,27 @@
 package Collabo.MoITZY.web.security;
 
+import Collabo.MoITZY.domain.member.Member;
+import Collabo.MoITZY.exception.MemberNotFoundException;
+import Collabo.MoITZY.web.repository.MemberRepository;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.time.Instant;
+import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class TokenProvider {
+
+    private final MemberRepository memberRepository;
 
     private static final String SECURITY_KEY = "jwt-token-of-mo-itzy-application"; // 비밀키
 
@@ -45,6 +53,29 @@ public class TokenProvider {
         } catch (JOSEException e) {
             throw new RuntimeException("토큰 생성에 실패했습니다: " + e.getMessage(), e);
         }
+    }
+
+    public void IsNotUser(String role) {
+        log.info("role: {}", role);
+
+        if (role.equals("ADMIN")) {
+            throw new MemberNotFoundException("관리자는 접근할 수 없습니다.");
+        } else {
+            throw new MemberNotFoundException("로그인 이후 이용해주세요.");
+        }
+    }
+
+    public Member getMemberByToken(String token) {
+        log.info("token: {}", token);
+
+        String loginId = validateJwt(token);
+        log.info("loginId: {}", loginId);
+
+        Optional<Member> findMember = memberRepository.findByLoginId(loginId);
+        if (findMember.isEmpty()) {
+            throw new MemberNotFoundException("회원 정보를 찾을 수 없습니다.");
+        }
+        return findMember.get();
     }
 
     // JWT 검증 메서드

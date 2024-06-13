@@ -3,6 +3,7 @@ package Collabo.MoITZY.domain.member;
 import Collabo.MoITZY.domain.ROI;
 import Collabo.MoITZY.domain.Review;
 import Collabo.MoITZY.domain.embed.Address;
+import Collabo.MoITZY.dto.ReviewDto;
 import Collabo.MoITZY.web.validation.form.UserJoinForm;
 import Collabo.MoITZY.web.validation.form.UserUpdateForm;
 import com.fasterxml.jackson.annotation.JsonIgnore;

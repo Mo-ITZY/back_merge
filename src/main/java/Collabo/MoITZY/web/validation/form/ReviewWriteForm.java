@@ -11,5 +11,4 @@ public class ReviewWriteForm {
 
     @NotBlank
     private String content;
-
 }

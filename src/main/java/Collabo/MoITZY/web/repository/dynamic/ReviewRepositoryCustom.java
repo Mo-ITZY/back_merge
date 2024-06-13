@@ -7,5 +7,4 @@ import java.util.List;
 public interface ReviewRepositoryCustom {
     public List<ReviewDto> findReviewDtos(Long festivalId);
 
-    public void writeReview(Long festivalId, String content, String img);
 }
