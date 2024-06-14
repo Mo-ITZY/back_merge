@@ -29,6 +29,13 @@ public class RoiController {
         return roiService.addLike(token, festivalId);
     }
 
+    // 찜 삭제
+    @PostMapping("/mo-itzy/{festival_id}/unlike")
+    public ResponseDto<?> unlike(@RequestHeader("Authorization") String token,
+                                 @PathVariable("festival_id") Long festivalId) {
+        return roiService.deleteLike(token, festivalId);
+    }
+
     // 찜 불러오기
     @GetMapping("/mo-itzy/like")
     public ResponseDto<?> getLikeList(@RequestHeader("Authorization") String token,
