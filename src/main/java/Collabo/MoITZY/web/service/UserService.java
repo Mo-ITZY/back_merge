@@ -1,5 +1,6 @@
 package Collabo.MoITZY.web.service;
 
+import Collabo.MoITZY.domain.member.Admin;
 import Collabo.MoITZY.domain.member.Member;
 import Collabo.MoITZY.domain.member.User;
 import Collabo.MoITZY.dto.MyPageDto;
@@ -42,11 +43,20 @@ public class UserService {
         return ResponseDto.ok(OK, "회원 가입 성공");
     }
 
-    // 회원 단건 조회
+    // 회원 정보 조회
     public ResponseDto<MyPageDto> findMember(String token) {
         try {
-            User user = tokenProvider.getValidateUser(token);
-            return ResponseDto.ok(OK, "회원 정보 조회 성공", new MyPageDto(user.getName(), user.getImg(), user.getRoiList().size()));
+            Member member = tokenProvider.getValidateMember(token);
+            String role = member.getRole(member);
+            if (role.equals("USER")) {
+                User user = (User) member;
+                return ResponseDto.ok(OK, "회원 정보 조회 성공", new MyPageDto(user.getName(), user.getImg(), user.getRoiList().size()));
+            } else if (role.equals("ADMIN")) {
+                return ResponseDto.ok(OK, "회원 정보 조회 성공", new MyPageDto(null, null, 0));
+            } else {
+                return ResponseDto.error(BAD_REQUEST, "로그인 후 이용해주세요");
+            }
+
         } catch (MemberNotFoundException e) {
             return ResponseDto.error(NOT_FOUND, e.getMessage());
         }

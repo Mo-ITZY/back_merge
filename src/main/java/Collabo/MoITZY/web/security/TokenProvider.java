@@ -68,6 +68,10 @@ public class TokenProvider {
         return (Admin) member;
     }
 
+    public Member getValidateMember(String token) {
+        return getMemberByToken(token);
+    }
+
     private Member getMemberByToken(String token) {
         log.info("token: {}", token);
 
