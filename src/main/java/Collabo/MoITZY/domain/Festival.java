@@ -3,7 +3,6 @@ package Collabo.MoITZY.domain;
 import Collabo.MoITZY.domain.embed.Address;
 import Collabo.MoITZY.domain.embed.Period;
 import Collabo.MoITZY.dto.FestivalApiDto;
-import Collabo.MoITZY.dto.ReviewDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

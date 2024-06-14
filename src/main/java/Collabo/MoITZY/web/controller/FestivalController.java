@@ -1,11 +1,9 @@
 package Collabo.MoITZY.web.controller;
 
-import Collabo.MoITZY.dto.FestivalDto;
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.repository.cond.FestivalSearchCond;
 import Collabo.MoITZY.web.service.FestivalService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;

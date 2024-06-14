@@ -1,8 +1,5 @@
 package Collabo.MoITZY.web.service;
 
-import Collabo.MoITZY.domain.member.Admin;
-import Collabo.MoITZY.domain.member.Member;
-import Collabo.MoITZY.domain.member.User;
 import Collabo.MoITZY.dto.LoginDto;
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.repository.MemberRepository;

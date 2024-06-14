@@ -1,6 +1,5 @@
 package Collabo.MoITZY.domain;
 
-import Collabo.MoITZY.domain.member.Member;
 import Collabo.MoITZY.domain.member.User;
 import jakarta.persistence.*;
 import lombok.Getter;

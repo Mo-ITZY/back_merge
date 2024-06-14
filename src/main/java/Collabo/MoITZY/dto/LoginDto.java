@@ -1,6 +1,5 @@
 package Collabo.MoITZY.dto;
 
-import Collabo.MoITZY.domain.member.Member;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

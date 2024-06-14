@@ -2,7 +2,6 @@ package Collabo.MoITZY.web.service;
 
 import Collabo.MoITZY.domain.Festival;
 import Collabo.MoITZY.domain.Review;
-import Collabo.MoITZY.domain.member.Member;
 import Collabo.MoITZY.domain.member.User;
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.dto.ReviewDto;
