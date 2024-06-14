@@ -2,6 +2,7 @@ package Collabo.MoITZY.web.controller;
 
 import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.web.service.UserService;
+import Collabo.MoITZY.web.validation.form.PasswordCheckForm;
 import Collabo.MoITZY.web.validation.form.UserJoinForm;
 import Collabo.MoITZY.web.validation.form.UserUpdateForm;
 import lombok.RequiredArgsConstructor;
@@ -35,5 +36,10 @@ public class UserController {
     @GetMapping("/mo-itzy/mypage")
     public ResponseDto<?> myPage(@RequestHeader("Authorization") String token) {
         return userService.findMember(token);
+    }
+
+    @PostMapping("/mo-itzy/password-check")
+    public ResponseDto<?> checkPassword(@RequestHeader("Authorization") String token, @RequestBody PasswordCheckForm form) {
+        return userService.isPasswordCorrect(token, form);
     }
 }

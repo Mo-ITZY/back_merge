@@ -7,6 +7,7 @@ import Collabo.MoITZY.dto.ResponseDto;
 import Collabo.MoITZY.exception.MemberNotFoundException;
 import Collabo.MoITZY.web.repository.MemberRepository;
 import Collabo.MoITZY.web.security.TokenProvider;
+import Collabo.MoITZY.web.validation.form.PasswordCheckForm;
 import Collabo.MoITZY.web.validation.form.UserJoinForm;
 import Collabo.MoITZY.web.validation.form.UserUpdateForm;
 import lombok.RequiredArgsConstructor;
@@ -88,6 +89,20 @@ public class UserService {
         Optional<Member> findMember = memberRepository.findByLoginId(user.getName());
         if (findMember.isPresent()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
+        }
+    }
+
+    public ResponseDto<?> isPasswordCorrect(String token, PasswordCheckForm form) {
+        try {
+            User user = tokenProvider.getValidateUser(token);
+
+            log.info("user: {}, password: {}", user.getLoginId(), form.getPassword());
+            if (memberRepository.existsByLoginIdAndPassword(user.getLoginId(), form.getPassword())) {
+                return ResponseDto.ok(OK, "비밀번호 일치");
+            }
+            return ResponseDto.error(BAD_REQUEST, "비밀번호 불일치");
+        } catch (MemberNotFoundException e) {
+            return ResponseDto.error(NOT_FOUND, e.getMessage());
         }
     }
 }
