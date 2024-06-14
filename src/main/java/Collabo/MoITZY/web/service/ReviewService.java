@@ -53,7 +53,7 @@ public class ReviewService {
             }
 
             try {
-                reviewRepository.save(new Review(user, festival.get(), form.getContent(), form.getImg()));
+                reviewRepository.save(new Review(user, festival.get(), form.getImg(), form.getContent()));
             } catch (Exception e) {
                 return ResponseDto.error(NOT_FOUND, "리뷰 작성 중 오류가 발생했습니다. 다시 시도해 주세요." + e.getMessage());
             }

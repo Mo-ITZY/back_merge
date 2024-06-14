@@ -92,6 +92,7 @@ public class UserService {
         }
     }
 
+    // 비밀번호 확인
     public ResponseDto<?> isPasswordCorrect(String token, PasswordCheckForm form) {
         try {
             User user = tokenProvider.getValidateUser(token);

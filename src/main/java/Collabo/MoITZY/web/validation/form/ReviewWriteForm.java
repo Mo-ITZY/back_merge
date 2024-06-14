@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class ReviewWriteForm {
 
-    @NotBlank
     private String img;
 
     @NotBlank

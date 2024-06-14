@@ -38,6 +38,7 @@ public class UserController {
         return userService.findMember(token);
     }
 
+    // 비밀번호 확인
     @PostMapping("/mo-itzy/password-check")
     public ResponseDto<?> checkPassword(@RequestHeader("Authorization") String token, @RequestBody PasswordCheckForm form) {
         return userService.isPasswordCorrect(token, form);
