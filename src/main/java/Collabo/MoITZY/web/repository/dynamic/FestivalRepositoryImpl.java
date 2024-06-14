@@ -1,6 +1,7 @@
 package Collabo.MoITZY.web.repository.dynamic;
 
 import Collabo.MoITZY.domain.Festival;
+import Collabo.MoITZY.domain.ROI;
 import Collabo.MoITZY.dto.FestivalDto;
 import Collabo.MoITZY.web.repository.cond.FestivalSearchCond;
 import com.querydsl.core.types.Projections;
@@ -51,6 +52,36 @@ public class FestivalRepositoryImpl implements FestivalRepositoryCustom {
         JPAQuery<Festival> countQuery = queryFactory
                 .selectFrom(festival)
                 .where(keywordEq(cond.getKeyword()));
+
+        return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
+    }
+
+    @Override
+    public Page<FestivalDto> searchLikeFestival(List<ROI> roiList, Pageable pageable) {
+        List<FestivalDto> content = queryFactory
+                .select(Projections.constructor(FestivalDto.class,
+                        festival.id,
+                        festival.name,
+                        festival.img,
+                        festival.LAT,
+                        festival.LNG,
+                        festival.trafficInfo,
+                        festival.expense,
+                        festival.contact,
+                        festival.homepage,
+                        festival.description,
+                        festival.facilities,
+                        festival.place,
+                        festival.period))
+                .from(festival)
+                .where(festival.roiList.any().in(roiList))
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        JPAQuery<Festival> countQuery = queryFactory
+                .selectFrom(festival)
+                .where(festival.roiList.any().in(roiList));
 
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchCount);
     }

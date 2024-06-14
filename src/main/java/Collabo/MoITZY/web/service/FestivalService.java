@@ -1,6 +1,7 @@
 package Collabo.MoITZY.web.service;
 
 import Collabo.MoITZY.domain.Festival;
+import Collabo.MoITZY.domain.ROI;
 import Collabo.MoITZY.dto.FestivalApiDto;
 import Collabo.MoITZY.dto.FestivalDto;
 import Collabo.MoITZY.dto.ResponseDto;
@@ -37,6 +38,12 @@ public class FestivalService {
     public ResponseDto<Page<FestivalDto>> findFestivals(FestivalSearchCond cond, Pageable pageable) {
         Page<FestivalDto> festivalDtos = festivalRepository.searchFestival(cond, pageable);
         return ResponseDto.ok(HttpStatus.OK, "축제 조회 성공", festivalDtos);
+    }
+
+    // 관심 축제 조회
+    public ResponseDto<Page<FestivalDto>> findLikeFestivals(List<ROI> roiList, Pageable pageable) {
+        Page<FestivalDto> festivalDtos = festivalRepository.searchLikeFestival(roiList, pageable);
+        return ResponseDto.ok(HttpStatus.OK, "관심축제 조회 성공", festivalDtos);
     }
 
     // 축제 상세(단 건) 조회

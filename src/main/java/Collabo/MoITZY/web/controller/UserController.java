@@ -19,10 +19,10 @@ public class UserController {
         return userService.join(form);
     }
 
-    // 마이 페이지 요청
-    @GetMapping("/mo-itzy/mypage")
-    public ResponseDto<?> myPage(@RequestHeader("Authorization") String token) {
-        return userService.findMember(token);
+    // 회원 탈퇴
+    @PostMapping("/mo-itzy/mypage/delete")
+    public ResponseDto<?> delete(@RequestHeader("Authorization") String token) {
+        return userService.deleteMember(token);
     }
 
     // 회원 정보 수정
@@ -31,10 +31,9 @@ public class UserController {
         return userService.updateMember(token, form);
     }
 
-    // 회원 탈퇴
-    @PostMapping("/mo-itzy/mypage/delete")
-    public ResponseDto<?> delete(@RequestHeader("Authorization") String token) {
-        return userService.deleteMember(token);
+    // 마이 페이지 요청
+    @GetMapping("/mo-itzy/mypage")
+    public ResponseDto<?> myPage(@RequestHeader("Authorization") String token) {
+        return userService.findMember(token);
     }
-
 }
