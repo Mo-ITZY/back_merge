@@ -14,7 +14,7 @@ public class InformController {
 
     private final InformService informService;
 
-    // 공지사항 조회
+    // 공지사항 조회 - 회원 정보 뿌리기
     @GetMapping("/mo-itzy/notice")
     public ResponseDto<?> getInforms(
             @RequestParam(defaultValue = "0") int page,

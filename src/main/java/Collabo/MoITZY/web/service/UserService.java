@@ -81,6 +81,8 @@ public class UserService {
     public ResponseDto<?> deleteMember(String token) {
         try {
             User user = tokenProvider.getValidateUser(token);
+
+            memberRepository.existsByLoginIdAndPassword(user.getLoginId(), user.getPassword());
             memberRepository.delete(user);
 
             return ResponseDto.ok(OK, "회원 탈퇴 성공");
