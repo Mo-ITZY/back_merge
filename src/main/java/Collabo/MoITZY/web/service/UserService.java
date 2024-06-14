@@ -44,12 +44,7 @@ public class UserService {
     // 회원 단건 조회
     public ResponseDto<MyPageDto> findMember(String token) {
         try {
-            Member member = tokenProvider.getMemberByToken(token);
-            String role = member.getRole(member);
-            if (!role.equals("USER")) {
-                tokenProvider.IsNotUser(role);
-            }
-            User user = (User) member;
+            User user = tokenProvider.getValidateUser(token);
             return ResponseDto.ok(OK, "회원 정보 조회 성공", new MyPageDto(user.getName(), user.getImg(), user.getRoiList().size()));
         } catch (MemberNotFoundException e) {
             return ResponseDto.error(NOT_FOUND, e.getMessage());
@@ -60,12 +55,7 @@ public class UserService {
     @Transactional
     public ResponseDto<Void> updateMember(String token, UserUpdateForm form) {
         try {
-            Member member = tokenProvider.getMemberByToken(token);
-            String role = member.getRole(member);
-            if (!role.equals("USER")) {
-                tokenProvider.IsNotUser(role);
-            }
-            User user = (User) member;
+            User user = tokenProvider.getValidateUser(token);
             user.updateUser(form);
             memberRepository.save(user);
 
@@ -79,12 +69,7 @@ public class UserService {
     @Transactional
     public ResponseDto<?> deleteMember(String token) {
         try {
-            Member member = tokenProvider.getMemberByToken(token);
-            String role = member.getRole(member);
-            if (!role.equals("USER")) {
-                tokenProvider.IsNotUser(role);
-            }
-            User user = (User) member;
+            User user = tokenProvider.getValidateUser(token);
             memberRepository.delete(user);
 
             return ResponseDto.ok(OK, "회원 탈퇴 성공");

@@ -36,18 +36,22 @@ public class ReviewService {
     @Transactional
     public ResponseDto<Void> writeReview(String token, Long festivalId, ReviewWriteForm form) {
         try {
-            Member member = tokenProvider.getMemberByToken(token);
-            String role = member.getRole(member);
-            if (!role.equals("USER")) {
-                tokenProvider.IsNotUser(role);
-            }
-
-            User user = (User) member;
+            User user = tokenProvider.getValidateUser(token);
             Long userId = user.getId();
             log.info("userId: {}", userId);
 
             Optional<Festival> festival = festivalRepository.findById(festivalId);
-            validation(festivalId, userId, festival);
+
+            boolean present = festival.isPresent();
+            if (!present) {
+                throw new ReviewWriteException("해당 축제를 찾을 수 없습니다.");
+            }
+
+            boolean exists = reviewRepository.existsByFestivalIdAndUserId(festivalId, userId);
+            log.info("해당 축제에 이미 리뷰를 썼는지: {}", exists);
+            if (exists) {
+                throw new ReviewWriteException("이미 리뷰를 작성하셨습니다.");
+            }
 
             try {
                 reviewRepository.save(new Review(user, festival.get(), form.getContent(), form.getImg()));
@@ -60,19 +64,6 @@ public class ReviewService {
             return ResponseDto.error(NOT_FOUND, e.getMessage());
         } catch (ReviewWriteException e) {
             return ResponseDto.error(CONFLICT, e.getMessage());
-        }
-    }
-
-    private void validation(Long festivalId, Long userId, Optional<Festival> festival) {
-        boolean present = festival.isPresent();
-        if (!present) {
-            throw new ReviewWriteException("해당 축제를 찾을 수 없습니다.");
-        }
-
-        boolean exists = reviewRepository.existsByFestivalIdAndUserId(festivalId, userId);
-        log.info("해당 축제에 이미 리뷰를 썼는지: {}", exists);
-        if (exists) {
-            throw new ReviewWriteException("이미 리뷰를 작성하셨습니다.");
         }
     }
 

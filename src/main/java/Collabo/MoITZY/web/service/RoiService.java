@@ -32,7 +32,7 @@ public class RoiService {
     @Transactional
     public ResponseDto<?> addLike(String token, Long festivalId) {
         try {
-            User user = getValidatedUser(token);
+            User user = tokenProvider.getValidateUser(token);
             Festival festival = getFestivalById(festivalId);
 
             ROI roi = new ROI(user, festival);
@@ -49,17 +49,8 @@ public class RoiService {
 
     // 찜 불러오기
     public List<ROI> getLikeList(String token) {
-        User user = getValidatedUser(token);
+        User user = tokenProvider.getValidateUser(token);
         return user.getRoiList();
-    }
-
-    private User getValidatedUser(String token) {
-        Member member = tokenProvider.getMemberByToken(token);
-        String role = member.getRole(member);
-        if (!role.equals("USER")) {
-            tokenProvider.IsNotUser(role);
-        }
-        return (User) member;
     }
 
     private Festival getFestivalById(Long festivalId) {

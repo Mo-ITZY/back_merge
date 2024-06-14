@@ -37,11 +37,7 @@ public class InformService {
     @Transactional
     public ResponseDto<Void> writeInform(String token, InformForm form) {
         try {
-            Member member = tokenProvider.getMemberByToken(token);
-            String role = member.getRole(member);
-            if (!role.equals("ADMIN")) {
-                tokenProvider.IsNotAdmin(role);
-            }
+            tokenProvider.getValidateAdmin(token);
 
             informRepository.save(new Inform(form.getTitle(), form.getContent(), LocalDateTime.now()));
             return ResponseDto.ok(OK, "공지사항 작성 성공");
