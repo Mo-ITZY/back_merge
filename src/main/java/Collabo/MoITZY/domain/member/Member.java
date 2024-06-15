@@ -31,10 +31,10 @@ public abstract class Member {
         this.password = password;
     }
 
-    public String getRole(Member member) {
-        if (member instanceof Admin) {
+    public String getRole() {
+        if (this instanceof Admin) {
             return "ADMIN";
-        } else if (member instanceof User) {
+        } else if (this instanceof User) {
             return "USER";
         } else {
             return  "UNKNOWN";

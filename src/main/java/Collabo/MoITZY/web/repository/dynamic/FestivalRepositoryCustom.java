@@ -13,6 +13,4 @@ public interface FestivalRepositoryCustom {
     Page<FestivalDto> searchFestival(FestivalSearchCond cond, Pageable pageable);
 
     Page<FestivalDto> searchLikeFestival(List<ROI> roiList, Pageable pageable);
-
-    FestivalDto findFestival(Long id);
 }

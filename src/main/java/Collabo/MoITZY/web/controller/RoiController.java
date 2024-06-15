@@ -22,7 +22,7 @@ public class RoiController {
     private final RoiService roiService;
     private final FestivalService festivalService;
 
-    // 찜하기 - 회원 정보 뿌리기
+    // 찜하기
     @PostMapping("/mo-itzy/festivals/{festival_id}/like")
     public ResponseDto<?> like(@RequestHeader("Authorization") String token,
                                @PathVariable("festival_id") Long festivalId) {

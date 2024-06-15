@@ -1,6 +1,5 @@
 package Collabo.MoITZY.web.security;
 
-import Collabo.MoITZY.domain.member.Admin;
 import Collabo.MoITZY.domain.member.Member;
 import Collabo.MoITZY.domain.member.User;
 import Collabo.MoITZY.exception.MemberNotFoundException;
@@ -56,22 +55,25 @@ public class TokenProvider {
         }
     }
 
+    // 검증된 유저 얻기
     public User getValidateUser(String token) {
         Member member = getMemberByToken(token);
-        validateRole(member, "USER");
+        getValidateRole(member, "USER");
         return (User) member;
     }
 
-    public Admin getValidateAdmin(String token) {
+    // 검증된 관리자 얻기
+    public void getValidateAdmin(String token) {
         Member member = getMemberByToken(token);
-        validateRole(member, "ADMIN");
-        return (Admin) member;
+        getValidateRole(member, "ADMIN");
     }
 
+    // 검증된 멤버 얻기
     public Member getValidateMember(String token) {
         return getMemberByToken(token);
     }
 
+    // 토큰을 통해 멤버 얻기
     private Member getMemberByToken(String token) {
         log.info("token: {}", token);
 
@@ -82,14 +84,16 @@ public class TokenProvider {
                 .orElseThrow(() -> new MemberNotFoundException("회원 정보를 찾을 수 없습니다."));
     }
 
-    private void validateRole(Member member, String requiredRole) {
-        String role = member.getRole(member);
+    // 역할 검증 메서드
+    private void getValidateRole(Member member, String requiredRole) {
+        String role = member.getRole();
         log.info("role: {}", role);
         if (!role.equals(requiredRole)) {
             throwRoleException(role, requiredRole);
         }
     }
 
+    // 역할 예외 처리 메서드
     private void throwRoleException(String role, String requiredRole) {
         if (requiredRole.equals("USER") && role.equals("ADMIN")) {
             throw new MemberNotFoundException("관리자는 접근할 수 없습니다.");

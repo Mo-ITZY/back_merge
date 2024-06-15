@@ -18,7 +18,7 @@ public class ReviewController {
         return reviewService.findReviewOfFestival(festivalId);
     }
 
-    // 리뷰 작성 - 회원 정보 뿌리기
+    // 리뷰 작성
     @PostMapping("mo-itzy/festivals/{festival_id}/review")
     public ResponseDto<?> writeReview(@RequestHeader("Authorization") String token,
                                       @PathVariable("festival_id") Long festivalId,

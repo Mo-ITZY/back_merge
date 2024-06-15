@@ -45,9 +45,4 @@ public class FestivalService {
         Page<FestivalDto> festivalDtos = festivalRepository.searchLikeFestival(roiList, pageable);
         return ResponseDto.ok(HttpStatus.OK, "관심축제 조회 성공", festivalDtos);
     }
-
-    // 축제 상세(단 건) 조회
-    public FestivalDto findFestival(Long id) {
-        return festivalRepository.findFestival(id);
-    }
 }

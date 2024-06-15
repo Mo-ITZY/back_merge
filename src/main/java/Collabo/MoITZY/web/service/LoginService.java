@@ -2,6 +2,7 @@ package Collabo.MoITZY.web.service;
 
 import Collabo.MoITZY.dto.LoginDto;
 import Collabo.MoITZY.dto.ResponseDto;
+import Collabo.MoITZY.exception.MemberNotFoundException;
 import Collabo.MoITZY.web.repository.MemberRepository;
 import Collabo.MoITZY.web.security.TokenProvider;
 import Collabo.MoITZY.web.validation.form.UserLoginForm;
@@ -21,21 +22,26 @@ public class LoginService {
 
     private final MemberRepository memberRepository;
     private final TokenProvider tokenProvider;
+    private final static int EXPR_TIME = 3600;
 
     // 로그인
     public ResponseDto<LoginDto> login(UserLoginForm form) {
         try {
             validateLoginCredentials(form.getLoginId(), form.getPassword());
-
-            String token = generateToken(form.getLoginId());
-            LoginDto loginDto = new LoginDto(token, 3600);
+            LoginDto loginDto = getLoginDto(form);
 
             return ResponseDto.ok(OK, "로그인 성공", loginDto);
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException | MemberNotFoundException e) {
             return ResponseDto.error(NOT_FOUND, e.getMessage());
         } catch (Exception e) {
             return ResponseDto.error(INTERNAL_SERVER_ERROR, "서버 오류");
         }
+    }
+
+    private LoginDto getLoginDto(UserLoginForm form) {
+        String token = tokenProvider.createJwt(form.getLoginId(), EXPR_TIME);
+        String role = tokenProvider.getValidateMember(token).getRole();
+        return new LoginDto(token, EXPR_TIME, role);
     }
 
     private void validateLoginCredentials(String loginId, String password) {
@@ -50,11 +56,7 @@ public class LoginService {
         }
     }
 
-    private String generateToken(String loginId) {
-        int exprTime = 3600;
-        return tokenProvider.createJwt(loginId, exprTime);
-    }
-
+    // 로그아웃
     public ResponseDto<?> logout(String token) {
         return ResponseDto.ok(OK, "로그아웃 성공");
     }
