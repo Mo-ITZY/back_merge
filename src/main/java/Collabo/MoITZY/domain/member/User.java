@@ -10,6 +10,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
 import static jakarta.persistence.CascadeType.*;
 import static lombok.AccessLevel.PROTECTED;
 
+@Slf4j
 @Entity
 @DiscriminatorValue("USER")
 @Getter
@@ -75,7 +77,9 @@ public class User extends Member {
         this.name = form.getName() == null || form.getName().equals("") ? this.name : form.getName();
         this.email = form.getEmail() == null || form.getEmail().equals("") ? this.email : form.getEmail();
         this.img = form.getImg() == null || form.getImg().equals("") ? this.img : form.getImg();
-        this.address = form.getAddress() == null ? this.address : form.getAddress();
+
+        this.address = this.address.getUpdateAddress(form.getAddress());
+
         if (form.getPassword() != null && !form.getPassword().equals(""))
             this.changePassword(form.getPassword());
         else {

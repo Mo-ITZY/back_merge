@@ -26,4 +26,12 @@ public class Address {
         this.third = third;
         this.detail = detail;
     }
+
+    public Address getUpdateAddress(Address address) {
+        this.first = address.getFirst() == null || address.getFirst().equals("") ? this.getFirst() : address.getFirst();
+        this.second = address.getSecond() == null || address.getSecond().equals("") ? this.getSecond() : address.getSecond();
+        this.third = address.getThird() == null || address.getThird().equals("") ? this.getThird() : address.getThird();
+        this.detail = address.getDetail() == null || address.getDetail().equals("") ? this.getDetail() : address.getDetail();
+        return this;
+    }
 }
