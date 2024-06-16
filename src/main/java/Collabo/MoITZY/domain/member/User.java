@@ -72,10 +72,14 @@ public class User extends Member {
     }
 
     public void updateUser(UserUpdateForm form) {
-        this.name = form.getName();
-        this.email = form.getEmail();
-        this.img = form.getImg();
-        this.address = form.getAddress();
-        this.changePassword(form.getPassword());
+        this.name = form.getName() == null || form.getName().equals("") ? this.name : form.getName();
+        this.email = form.getEmail() == null || form.getEmail().equals("") ? this.email : form.getEmail();
+        this.img = form.getImg() == null || form.getImg().equals("") ? this.img : form.getImg();
+        this.address = form.getAddress() == null ? this.address : form.getAddress();
+        if (form.getPassword() != null && !form.getPassword().equals(""))
+            this.changePassword(form.getPassword());
+        else {
+            this.changePassword(this.getPassword());
+        }
     }
 }

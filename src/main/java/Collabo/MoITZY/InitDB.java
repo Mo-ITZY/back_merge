@@ -146,11 +146,9 @@ public class InitDB {
             log.info("url: {}", uri);
 
             String body = restTemplate.getForEntity(uri, String.class).getBody();
-
             log.info("body: {}", body);
 
             ObjectMapper objectMapper = new ObjectMapper();
-
             FestivalApiDto festivalApiDto = null;
             try {
                 festivalApiDto = objectMapper.readValue(body, FestivalApiDto.class);

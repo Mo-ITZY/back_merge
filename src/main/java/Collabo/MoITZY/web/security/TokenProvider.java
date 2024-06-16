@@ -28,7 +28,7 @@ public class TokenProvider {
     // JWT 생성 메서드
     public String createJwt(String loginId, int duration) {
         try {
-            // 만료 시간 : 현재 시간 기준 주어진 시간 뒤
+            // 만료 시간 : 현재 시간 + 주어진
             Instant now = Instant.now();
             Instant exprTime = now.plusSeconds(duration);
 
